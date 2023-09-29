@@ -13,8 +13,12 @@
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "strictPropertyInitialization": false,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@test-mono/constants": ["libs/constants/src/index.ts"],
+      "@test-mono/main-database": ["libs/main-database/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

@@ -1,0 +1,29 @@
+{
+  "name": "main-database",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/main-database/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/main-database",
+        "main": "libs/main-database/src/index.ts",
+        "tsConfig": "libs/main-database/tsconfig.lib.json",
+        "assets": ["libs/main-database/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/main-database/**/*.ts",
+          "libs/main-database/package.json"
+        ]
+      }
+    }
+  },
+  "tags": []
+}
