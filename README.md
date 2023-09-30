@@ -17,7 +17,61 @@ npm install -D @nx/angular
 nx g @nx/angular:app web --style=scss --routing=true --linter=eslint --unitTestRunner=jest --e2eTestRunner=cypress --tags=scope:web,type:app --directory=apps --frontendProject={frontend app name}
 ```
 
-npm install -g @nrwl/cli
+```bash
+nx g @nx/js:lib constants --directory libs --buildable --importPath=@test-mono/constants --tags=scope:constants,type:lib --unitTestRunner=none --linter=eslint
+```
+
+```bash
+nx g @nx/js:lib main-database --directory libs --buildable --importPath=@test-mono/main-database
+```
+
+```bash
+npm install --save @nestjs/typeorm typeorm pg
+```
+
+
+## Install PostGIS & pgAdmin4
+
+```bash
+curl -fsS https://www.pgadmin.org/static/packages_pgadmin_org.pub | sudo gpg --dearmor -o /usr/share/keyrings/packages-pgadmin-org.gpg
+```
+
+```bash
+sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/packages-pgadmin-org.gpg] https://ftp.postgresql.org/pub/pgadmin/pgadmin4/apt/$(lsb_release -cs) pgadmin4 main" > /etc/apt/sources.list.d/pgadmin4.list && apt update'
+```
+
+```bash
+sudo apt install pgadmin4-desktop
+```
+
+```bash
+docker pull postgis/postgis
+```
+
+```bash
+sudo docker run --name farmolog-postgis -e POSTGRES_PASSWORD=123456 -p 5432:5432 -d postgis/postgis
+```
+
+Then create a new server in pgAdmin4 with the following credentials:
+
+```bash
+Host: localhost
+Port: 5432
+Maintenance database: postgres
+Username: postgres
+Password: 123456
+```
+
+create a new database named `farmolog` and run the following query:
+
+test sql
+```sql
+CREATE EXTENSION postgis;
+```
+
+
+
+
 
 
 
