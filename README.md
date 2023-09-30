@@ -62,67 +62,126 @@ Username: postgres
 Password: 123456
 ```
 
-create a new database named `farmolog` and run the following query:
+Then create a new database named `test-mono-main-db` and user named `test-mono-user` with password `123456` and grant all privileges to the user.
+```sql
+CREATE DATABASE "test-mono-main-db";
+```
 
-test sql
+```sql
+CREATE USER "test-mono-user" WITH LOGIN PASSWORD '123456';
+```
+
+```sql
+GRANT ALL PRIVILEGES ON DATABASE "test-mono-main-db" TO "test-mono-user";
+```
+
+Then connect to the database with the following credentials:
+
+```bash
+Host: localhost
+Port: 5432
+Maintenance database: test-mono-main-db
+Username: test-mono-user
+Password: 123456
+```
+
+Then install the postgis extension in the database with the following
 ```sql
 CREATE EXTENSION postgis;
 ```
 
+write the following query to check if the extension is installed:
 
-
-
-
-
-
-## Generate code
-
-If you happen to use Nx plugins, you can leverage code generators that might come with it.
-
-Run `nx list` to get a list of available plugins and whether they have generators. Then run `nx list <plugin-name>` to see what generators are available.
-
-Learn more about [Nx generators on the docs](https://nx.dev/plugin-features/use-code-generators).
-
-## Running tasks
-
-To execute tasks with Nx use the following syntax:
-
-```
-nx <target> <project> <...options>
+```sql
+SELECT PostGIS_version();
 ```
 
-You can also run multiple targets:
+## Connect to the database with TypeORM
 
-```
-nx run-many -t <target1> <target2>
-```
-
-..or add `-p` to filter specific projects
-
-```
-nx run-many -t <target1> <target2> -p <proj1> <proj2>
+```bash
+npm install --save @nestjs/typeorm typeorm pg
 ```
 
-Targets can be defined in the `package.json` or `projects.json`. Learn more [in the docs](https://nx.dev/core-features/run-tasks).
+```bash
+npm install --save-dev @types/pg
+```
 
-## Want better Editor Integration?
+```bash
+npm install --save-dev @types/node
+```
 
-Have a look at the [Nx Console extensions](https://nx.dev/nx-console). It provides autocomplete support, a UI for exploring and running tasks & generators, and more! Available for VSCode, IntelliJ and comes with a LSP for Vim users.
+```bash
+npm install --save-dev @types/geojson
+```
 
-## Ready to deploy?
+### Create folder to "main-database" lib
 
-Just run `nx build demoapp` to build the application. The build artifacts will be stored in the `dist/` directory, ready to be deployed.
+```bash
+mkdir libs/main-database/src/lib/entities
+```
 
-## Set up CI!
+### Create file to "main-database" lib
 
-Nx comes with local caching already built-in (check your `nx.json`). On CI you might want to go a step further.
+```bash
+touch libs/main-database/src/lib/entities/geojson.entity.ts
+```
 
-- [Set up remote caching](https://nx.dev/core-features/share-your-cache)
-- [Set up task distribution across multiple machines](https://nx.dev/core-features/distribute-task-execution)
-- [Learn more how to setup CI](https://nx.dev/recipes/ci)
+### Write the following code to "geojson.entity.ts"
 
-## Connect with us!
+```typescript
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Geometry } from 'geojson';
 
-- [Join the community](https://nx.dev/community)
-- [Subscribe to the Nx Youtube Channel](https://www.youtube.com/@nxdevtools)
-- [Follow us on Twitter](https://twitter.com/nxdevtools)
+@Entity()
+export class GeoJson {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ type: 'geometry', spatialFeatureType: 'Point', srid: 4326 })
+  point: Geometry;
+}
+```
+
+
+## If necessary;  Install Redis & RedisInsight, RabbitMQ & RabbitMQ Management with Docker
+
+```bash
+docker pull redis
+```
+
+```bash
+docker run --name farmolog-redis -p 6379:6379 -d redis
+```
+
+```bash
+docker pull redislabs/redisinsight
+```
+
+```bash
+docker run -v redisinsight:/db -p 8001:8001 -d --name farmolog-redisinsight redislabs/redisinsight
+```
+
+Then go to `http://localhost:8001` and connect to the redis server with the following credentials:
+
+```bash
+
+Host: localhost
+Port: 6379
+Password: 123456
+```
+
+
+```bash
+docker pull rabbitmq
+```
+
+```bash
+docker run -d --hostname farmolog-rabbitmq --name farmolog-rabbitmq -p 15672:15672 -p 5672:5672 rabbitmq:3-management
+```
+
+Then go to `http://localhost:15672` and login with the following credentials:
+
+```bash
+Username: guest
+Password: guest
+```
