@@ -74,6 +74,10 @@ CREATE USER "test-mono-user" WITH LOGIN PASSWORD '123456';
 ```sql
 GRANT ALL PRIVILEGES ON DATABASE "test-mono-main-db" TO "test-mono-user";
 ```
+## Give Login permission to the user
+```sql
+ALTER ROLE "test-mono-user" WITH LOGIN;
+```
 
 Then connect to the database with the following credentials:
 
@@ -95,6 +99,8 @@ write the following query to check if the extension is installed:
 ```sql
 SELECT PostGIS_version();
 ```
+
+## Create 
 
 ## Connect to the database with TypeORM
 
@@ -140,6 +146,12 @@ export class GeoJson {
   @Column({ type: 'geometry', spatialFeatureType: 'Point', srid: 4326 })
   point: Geometry;
 }
+```
+
+## Create Initial Migration
+
+```bash
+npm run migration:generate -name="InitalTest"
 ```
 
 

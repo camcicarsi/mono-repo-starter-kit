@@ -4,7 +4,7 @@ export const postgresDataSource = new DataSource({
   type: 'postgres',
   host: 'localhost',
   port: 5432,
-  username: 'farmolog-user',
+  username: 'farmolog-main-user',
   password: '123456',
   database: 'farmolog-main-db',
   synchronize: false,
