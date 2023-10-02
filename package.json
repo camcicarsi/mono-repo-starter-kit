@@ -6,9 +6,12 @@
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "build:main-database": "nx build main-database",
     "migration:generate": "nx build main-database && npm run typeorm -- migration:generate ./libs/main-database/src/lib/migrations/$npm_config_name -d ./libs/main-database/src/data-source.ts",
+    "migration:generate:win": "nx build main-database && npm run typeorm -- migration:generate ./libs/main-database/src/lib/migrations/%npm_config_name% -d ./libs/main-database/src/data-source.ts",
     "migration:run": "nx build main-database && npm run typeorm -- migration:run -d ./libs/main-database/src/data-source.ts",
     "migration:revert": "nx build main-database && npm run typeorm -- migration:revert -d ./libs/main-database/src/data-source.ts",
-    "serve:api": "npm run migration:run && nx serve api"
+    "serve:api": "npm run migration:run && nx serve api",
+    "demo": "echo Hello ./libs/main-database/src/lib/migrations/$npm_config_name",
+    "demo:win": "echo Hello ./libs/main-database/src/lib/migrations/%npm_config_name%"
   },
   "private": true,
   "dependencies": {
