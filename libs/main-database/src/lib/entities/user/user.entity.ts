@@ -12,6 +12,8 @@ import { EntityAbstract } from '../../interfaces';
 // import { CorporationEntity } from './corporation/corporation.entity';
 // import { CorporationUserEntity } from './corporation';
 
+//! it's yaml update commit
+
 @Entity('users')
 export class UserEntity extends EntityAbstract {
   @Column()
